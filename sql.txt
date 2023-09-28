@@ -1,0 +1,93 @@
+CREATE TABLE users (
+  user_id INT PRIMARY KEY AUTO_INCREMENT,
+  user_name VARCHAR(255),
+  user_email VARCHAR(255),
+  user_img LONGBLOB,
+  user_password VARCHAR(255),
+  user_phone INT,
+  is_loggedIn INT,
+  user_role VARCHAR(255),
+  user_location VARCHAR(255)
+);
+
+
+CREATE TABLE contact_us (
+  ticket_id INT PRIMARY KEY AUTO_INCREMENT,
+  user_name VARCHAR(255),
+  user_email VARCHAR(255),
+  user_phone INT,
+  message_user TEXT
+);
+
+
+
+
+CREATE TABLE Admins (
+  Admins_id INT PRIMARY KEY AUTO_INCREMENT,
+  Admins_name VARCHAR(255),
+  Admins_email VARCHAR(255),
+  Admins_password VARCHAR(255)
+);
+
+CREATE TABLE Category (
+  Category_id INT PRIMARY KEY AUTO_INCREMENT,
+  Category_name VARCHAR(255),
+  Category_img LONGBLOB,
+  Category_description VARCHAR(255)
+);
+
+CREATE TABLE products (
+  product_id INT PRIMARY KEY AUTO_INCREMENT,
+  products_img LONGBLOB,
+  products_name VARCHAR(255),
+  products_description VARCHAR(255),
+  products_quantity INT,
+  products_price INT,
+  Category_id INT,
+  FOREIGN KEY (Category_id) REFERENCES Category(Category_id)
+);
+
+CREATE TABLE orders (
+  order_id INT PRIMARY KEY AUTO_INCREMENT,
+  user_id INT,
+  order_date DATETIME,
+  total_amount INT,
+  adress VARCHAR(255),
+  FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+CREATE TABLE order_products (
+  order_id INT,
+  product_id INT,
+  quantity INT,
+  FOREIGN KEY (order_id) REFERENCES orders(order_id),
+  FOREIGN KEY (product_id) REFERENCES products(product_id)
+);
+
+CREATE TABLE cart (
+  cart_id INT PRIMARY KEY AUTO_INCREMENT,
+  quantity INT,
+  created_at DATETIME,
+  user_id INT,
+  product_id INT,
+  FOREIGN KEY (user_id) REFERENCES users(user_id),
+  FOREIGN KEY (product_id) REFERENCES products(product_id)
+);
+
+CREATE TABLE review (
+  review_id INT PRIMARY KEY AUTO_INCREMENT,
+  product_id INT,
+  user_id INT,
+  rating INT,
+  review_text VARCHAR(255),
+  review_date DATE,
+  FOREIGN KEY (product_id) REFERENCES products(product_id),
+  FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+
+
+SELECT products.*, Category.Category_name
+FROM products
+JOIN Category ON products.Category_id = Category.Category_id;
+
